@@ -18,9 +18,6 @@ jobs:
       - name: Show NodeJS version
         run: npm --version
 
-      - name: Install Truffle
-        run: npm install truffle -g
-
       - name: Install Dependencies
         run: cd blockchain && npm ci
 
