@@ -1,0 +1,7 @@
+.DS_Store
+.idea
+*/node_modules
+blockchain/build
+blockchain/types
+.nyc_output
+www/src/config/types
