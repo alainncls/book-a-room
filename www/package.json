@@ -1,0 +1,47 @@
+{
+  "name": "book-a-room",
+  "version": "1.0.0",
+  "description": "DApp to book rooms",
+  "repository": "git@github.com:alainncls/book-a-room.git",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack serve --progress --color --open",
+    "build": "webpack",
+    "build:prod": "webpack --mode production",
+    "test": "mocha --recursive --require @babel/register",
+    "test:watch": "mocha --recursive --watch --require @babel/register",
+    "test:coverage": "nyc mocha  --recursive "
+  },
+  "author": "Alain Nicolas",
+  "license": "ISC",
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "ethers": "^5.5.2",
+    "lit-html": "^1.2.1",
+    "noty": "^3.2.0-beta",
+    "page": "^1.11.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-transform-runtime": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/register": "^7.9.0",
+    "@istanbuljs/nyc-config-babel": "^3.0.0",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-istanbul": "^6.0.0",
+    "chai": "^4.2.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^10.0.0",
+    "css-loader": "^6.5.1",
+    "html-webpack-plugin": "^5.5.0",
+    "mocha": "^7.2.0",
+    "nyc": "^15.0.1",
+    "sinon": "^9.0.2",
+    "style-loader": "^1.2.1",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.2",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.6.0"
+  }
+}
