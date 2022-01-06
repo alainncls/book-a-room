@@ -5,3 +5,5 @@ blockchain/build
 blockchain/types
 .nyc_output
 www/src/config/types
+coverage
+coverage.json
