@@ -1,0 +1,34 @@
+import {ContractReceipt, ContractTransaction, Event, Signer} from 'ethers'
+import {BookARoom as BookARoomContractType} from "./types/ethers-contracts/BookARoom";
+import {BookARoom__factory} from "./types/ethers-contracts";
+
+let bookARoomJson = require('../../../blockchain/build/contracts/BookARoom.json')
+let bookARoomAddress = bookARoomJson.networks['5777'].address
+
+class BookARoomContract {
+    private contract: BookARoomContractType;
+
+    constructor(etherSigner: Signer) {
+        this.contract = BookARoom__factory.connect(bookARoomAddress, etherSigner)
+    }
+
+    getPlanning(roomId: number): Promise<string[]> {
+        return this.contract.getPlanning(roomId)
+    }
+
+    async bookARoom(roomId: number, hour: number): Promise<boolean> {
+        const transaction: ContractTransaction = await this.contract.bookARoom(roomId, hour)
+        const receipt: ContractReceipt = await transaction.wait(1)
+        const event: Event = receipt.events.pop()
+        return !!event;
+    }
+
+    async cancelBooking(roomId: number, hour: number): Promise<boolean> {
+        const transaction: ContractTransaction = await this.contract.cancelBooking(roomId, hour)
+        const receipt: ContractReceipt = await transaction.wait(1)
+        const event: Event = receipt.events.pop()
+        return !!event;
+    }
+}
+
+export default BookARoomContract
