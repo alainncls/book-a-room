@@ -10,7 +10,7 @@ import BookARoom from "./service/BookARoom";
 import CancelBooking from "./service/CancelBooking";
 
 import {render} from 'lit-html'
-import {footer, header, layout, viewLoading, viewNotFound, viewRooms} from './view'
+import {footer, header, layout, viewBookings, viewLoading, viewNotFound, viewRooms} from './view'
 
 // bind app
 const wrapper = document.querySelector('#app')
@@ -29,20 +29,37 @@ const displayLoading = () => {
     const account = await provider.getAccount()
     // factory
     const contractFactory = new ContractFactory(etherSigner)
-    const bookARoomContract = contractFactory.getBookARoomContract();
     // services
     const getPlanning = new GetPlanning(contractFactory)
     const bookARoom = new BookARoom(contractFactory)
     const cancelBooking = new CancelBooking(contractFactory)
     const rooms = new GetRooms(getPlanning)
 
-    // homepage
+    // Homepage
     page('/', async function () {
         displayLoading()
         const cocaRooms = await rooms.getCocaRooms()
         const pepsiRooms = await rooms.getPepsiRooms()
         const allRooms = [...cocaRooms, ...pepsiRooms]
         const view = viewRooms(allRooms, bookARoom)
+        render(layout(header(), view, footer()), wrapper)
+    })
+
+    // My Bookings
+    page('/bookings', async function () {
+        displayLoading()
+        const cocaRooms = await rooms.getCocaRooms()
+        const pepsiRooms = await rooms.getPepsiRooms()
+        const allRooms = [...cocaRooms, ...pepsiRooms]
+        const bookings = allRooms
+            .map(room => room.planning.map((booker, hour) => {
+                if (booker === account) {
+                    return {roomId: room.id, hour}
+                }
+            }))
+            .flat()
+            .filter(booking => booking)
+        const view = viewBookings(bookings, cancelBooking)
         render(layout(header(), view, footer()), wrapper)
     })
 

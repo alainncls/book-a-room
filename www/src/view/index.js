@@ -23,6 +23,13 @@ const footer = () => html`
         </div>
     </footer>`
 
+// views
+const viewLoading = () => html`
+    <div class="loading loading-lg"></div>`
+
+const viewNotFound = () => html`
+    <div>Not found !</div>`
+
 const viewRooms = (rooms, bookARoom) => {
     const bookingHandler = {
         async handleEvent(e) {
@@ -46,11 +53,14 @@ const viewRooms = (rooms, bookARoom) => {
                     <button data-isbooked=${isBooked} data-roomid=${room.id} data-hour=${hour} @click=${bookingHandler} style="background-color:${color}">${hour}:00</button>`
             });
             return html`
-                <li data-room="${room.id}">Room #${room.id + 1}: ${planningDisplay}</li>`
+                <li>Room #${room.id + 1}: ${planningDisplay}</li>`
         }
     )
 
     return html`
+        <a href="bookings" class="btn btn-primary">
+            My Bookings
+        </a>
         <h2>Rooms</h2>
         <ul>
             ${roomsDisplay}
@@ -58,12 +68,36 @@ const viewRooms = (rooms, bookARoom) => {
     `
 }
 
-// views
-const viewLoading = () => html`
-    <div class="loading loading-lg"></div>`
+const viewBookings = (bookings, cancelBooking) => {
+    const cancelBookingHandler = {
+        async handleEvent(e) {
+            e.preventDefault()
+            const requestedCancelBooking = e.target
+            const roomId = requestedCancelBooking.dataset.roomid
+            const hour = requestedCancelBooking.dataset.hour
+            cancelBooking.cancelBooking(roomId, hour)
+        },
+    }
 
-const viewNotFound = () => html`
-    <div>Not found !</div>`
+    const bookingsDisplay = bookings.map((booking) => {
+            return html`
+                <li>
+                    Room #${booking.roomId + 1} @${booking.hour}:00
+                    <button data-roomid=${booking.roomId} data-hour=${booking.hour} @click=${cancelBookingHandler}>Cancel ?</button>
+                </li>`
+        }
+    )
+
+    return html`
+        <a href="/" class="btn btn-primary">
+            All Rooms
+        </a>
+        <h2>My bookings</h2>
+        <ul>
+            ${bookingsDisplay}
+        </ul>
+    `
+}
 
 export {
     layout,
@@ -72,4 +106,5 @@ export {
     viewLoading,
     viewNotFound,
     viewRooms,
+    viewBookings,
 }
