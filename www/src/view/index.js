@@ -12,6 +12,8 @@ const header = () => html`
     <header class="navbar">
         <section class="navbar-center">
             <a href="/" class="btn btn-link sitename">Book A Room</a>
+            <a href="/" class="btn btn-link">All Rooms</a>
+            <a href="/bookings" class="btn btn-link">My Bookings</a>
         </section>
     </header>`
 
@@ -48,23 +50,31 @@ const viewRooms = (rooms, bookARoom) => {
     const roomsDisplay = rooms.map((room) => {
             const planningDisplay = room.planning.map((booker, hour) => {
                 const isBooked = booker !== '0x0000000000000000000000000000000000000000'
-                const color = isBooked ? 'red' : 'green';
+                const classIsBooked = isBooked ? 'disabled' : 'enabled';
                 return html`
-                    <button data-isbooked=${isBooked} data-roomid=${room.id} data-hour=${hour} @click=${bookingHandler} style="background-color:${color}">${hour}:00</button>`
+                    <button class="hour ${classIsBooked}" ${classIsBooked} data-isbooked=${isBooked} data-roomid=${room.id} data-hour=${hour} @click=${bookingHandler}>${hour}:00</button>`
             });
             return html`
-                <li>Room #${room.id + 1}: ${planningDisplay}</li>`
+                <tr>
+                    <td>Room #${room.id + 1}</td>
+                    <td>${planningDisplay}</td>
+                </tr>`
         }
     )
 
     return html`
-        <a href="bookings" class="btn btn-primary">
-            My Bookings
-        </a>
-        <h2>Rooms</h2>
-        <ul>
+        <h2>All Rooms</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Room name</th>
+                <th colspan="24">Hours</th>
+            </tr>
+            </thead>
+            <tbody>
             ${roomsDisplay}
-        </ul>
+            </tbody>
+        </table>
     `
 }
 
@@ -83,15 +93,12 @@ const viewBookings = (bookings, cancelBooking) => {
             return html`
                 <li>
                     Room #${booking.roomId + 1} @${booking.hour}:00
-                    <button data-roomid=${booking.roomId} data-hour=${booking.hour} @click=${cancelBookingHandler}>Cancel ?</button>
+                    <button class="cancel" data-roomid=${booking.roomId} data-hour=${booking.hour} @click=${cancelBookingHandler}>Cancel ?</button>
                 </li>`
         }
     )
 
     return html`
-        <a href="/" class="btn btn-primary">
-            All Rooms
-        </a>
         <h2>My bookings</h2>
         <ul>
             ${bookingsDisplay}
