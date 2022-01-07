@@ -12,6 +12,11 @@
     font-size: 1.2em;
 }
 
+button {
+    border: none;
+    border-radius: 2px;
+}
+
 .btn.btn-primary:hover {
     background-color: #5755d9c4;
 }
@@ -19,8 +24,7 @@
 .container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    width: 30rem;
+    align-items: center;
     max-width: 85%;
     padding: 3em 0;
 }
@@ -34,16 +38,30 @@
     margin: 0.5em 0;
 }
 
-.candidates {
-    margin: 1em 0;
-}
-
 footer {
     margin: 1em;
-    position: fixed;
     bottom: 0;
 }
 
-#noty_layout__topRight {
-    top: 50px !important;
+.hour {
+    font-size: 0.8em;
+    color: #ffffff;
+}
+
+.disabled {
+    background-color: #a25959;
+    cursor: not-allowed;
+}
+
+.enabled {
+    background-color: #5b9b5b;
+    cursor: pointer;
+}
+
+.cancel {
+    cursor: pointer;
+}
+
+.cancel:hover {
+    background-color: #f36363;
 }
