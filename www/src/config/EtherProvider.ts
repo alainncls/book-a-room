@@ -10,7 +10,7 @@ class EtherProvider {
 
     constructor() {
         let provider
-        // use web3 instance, already provided by MetaMask,
+        // use web3 instance, already provided by MetaMask
         if (typeof window.ethereum !== 'undefined') {
             window.ethereum.request({ method: 'eth_requestAccounts' });
             provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -26,7 +26,6 @@ class EtherProvider {
     }
 
     getAccount() {
-        console.log({...this.etherSigner})
         return this.etherSigner.getAddress()
     }
 }
