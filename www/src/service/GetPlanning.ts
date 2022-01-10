@@ -10,7 +10,7 @@ class GetPlanning {
 
     async getPlanning(roomId: number): Promise<string[]> {
         const bookARoom: BookARoomContract = this.contractFactory.getBookARoomContract()
-        return await bookARoom.getPlanning(roomId)
+        return bookARoom.getPlanning(roomId)
     }
 }
 
