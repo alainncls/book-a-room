@@ -37,7 +37,6 @@ This DApp is composed of 2 main folders:
 
 * Tests frontend
 * Reload after booking is confirmed
-* Display a notification when a transaction is confirmed
 * Name the rooms
 * Create rooms on migration
 * Add a "back office page to administrate the rooms
