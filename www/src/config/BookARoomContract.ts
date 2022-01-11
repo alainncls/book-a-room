@@ -2,6 +2,9 @@ import {ContractReceipt, ContractTransaction, Event, Signer} from 'ethers'
 import {BookARoom as BookARoomContractType} from "./types/ethers-contracts/BookARoom";
 import {BookARoom__factory} from "./types/ethers-contracts";
 
+export type OnBookCallback = (roomId: number, hour: number) => void
+export type OnCancelCallback = (roomId: number, hour: number) => void
+
 let bookARoomJson = require('../../../blockchain/build/contracts/BookARoom.json')
 let bookARoomAddress = bookARoomJson.networks['5777'].address
 
@@ -28,6 +31,18 @@ class BookARoomContract {
         const receipt: ContractReceipt = await transaction.wait(1)
         const event: Event = receipt.events.pop()
         return !!event;
+    }
+
+    onBook(callback: OnBookCallback) {
+        this.contract.once("BookingConfirmed", (booker, roomId, hour) => {
+            callback(roomId, hour)
+        })
+    }
+
+    onCancel(callback: OnCancelCallback) {
+        this.contract.once("BookingCancelled", (booker, roomId, hour) => {
+            callback(roomId, hour)
+        })
     }
 }
 
