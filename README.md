@@ -35,7 +35,6 @@ This DApp is composed of 2 main folders:
 
 ## To Do
 
-* Tests frontend
 * Reload after booking is confirmed
 * Name the rooms
 * Create rooms on migration
