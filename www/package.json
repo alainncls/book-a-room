@@ -8,8 +8,8 @@
     "start": "webpack serve --progress --color --open",
     "build": "webpack",
     "build:prod": "webpack --mode production",
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test/**/*spec*'",
-    "test:watch": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test/**/*spec*' --recursive --watch --watch-files src/**/*.ts,test/**/*.*s",
+    "test": "mocha -r ts-node/register 'test/**/*spec*'",
+    "test:watch": "mocha -r ts-node/register 'test/**/*spec*' --recursive --watch --watch-files src/**/*.ts,test/**/*.*s",
     "test:coverage": "nyc mocha --recursive "
   },
   "author": "Alain Nicolas",
