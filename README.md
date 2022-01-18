@@ -1,5 +1,8 @@
 # Book A Room
 
+[![Build](https://github.com/alainncls/book-a-room/actions/workflows/pipeline.yml/badge.svg)](https://github.com/alainncls/book-a-room/actions/workflows/pipeline.yml)
+[![Coverage Status](https://coveralls.io/repos/github/alainncls/book-a-room/badge.svg?branch=main)](https://coveralls.io/github/alainncls/book-a-room?branch=main)
+
 Two companies, COKE and PEPSI, are sharing an office building but as they are competitors, they don’t trust each other.
 
 Tomorrow is COLA day (for one day), that the two companies are celebrating. They are gathering a number of business partners in the building.
