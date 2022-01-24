@@ -42,3 +42,4 @@ This DApp is composed of 2 main folders:
 * Name the rooms
 * Create rooms on migration
 * Add a "back office" page to administrate the rooms
+* Finish the frontend tests
