@@ -8,8 +8,9 @@ class BookARoom {
         this.contractFactory = contractFactory
     }
 
-    async bookARoom(roomId: number, hour: number): Promise<void> {
+    async bookARoom(roomId: number, hour: number, eventBookingListener: any): Promise<void> {
         const bookARoom: BookARoomContract = this.contractFactory.getBookARoomContract()
+        bookARoom.onBook(eventBookingListener)
         await bookARoom.bookARoom(roomId, hour)
     }
 }

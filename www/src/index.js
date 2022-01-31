@@ -12,7 +12,6 @@ import CancelBooking from "./service/CancelBooking";
 import {render} from 'lit-html'
 import {footer, header, layout, viewBookings, viewLoading, viewNotFound, viewRooms} from './view'
 // notifications
-import Noty from 'noty'
 import 'noty/lib/noty.css'
 import 'noty/lib/themes/light.css'
 
@@ -20,25 +19,7 @@ import 'noty/lib/themes/light.css'
 const wrapper = document.querySelector('#app')
 
 const displayLoading = () => {
-    render(layout(header(), viewLoading(), footer()), wrapper)
-}
-
-const bookCallback = (roomId, hour) => {
-        new Noty({
-            theme: 'light',
-            type: 'success',
-            layout: 'topRight',
-            text: `Room ${Number(roomId) + 1} was booked at ${hour}:00`,
-        }).show();
-    }
-
-const cancelCallback = (roomId, hour) => {
-        new Noty({
-            theme: 'light',
-            type: 'warning',
-            layout: 'topRight',
-            text: `Booking for room ${Number(roomId) + 1} at ${hour}:00 was cancelled`,
-        }).show();
+        render(layout(header(), viewLoading(), footer()), wrapper)
     }
 
 // bootstrap
@@ -51,9 +32,6 @@ const cancelCallback = (roomId, hour) => {
     const account = await provider.getAccount()
     // factory
     const contractFactory = new ContractFactory(etherSigner)
-    const bookARoomContract = contractFactory.getBookARoomContract();
-    bookARoomContract.onBook(bookCallback)
-    bookARoomContract.onCancel(cancelCallback)
     // services
     const getPlanning = new GetPlanning(contractFactory)
     const bookARoom = new BookARoom(contractFactory)

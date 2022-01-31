@@ -1,4 +1,6 @@
 import {html} from 'lit-html'
+import page from 'page'
+import Noty from 'noty'
 
 // bind app
 const layout = (header, content, footer) => html`
@@ -33,6 +35,11 @@ const viewNotFound = () => html`
     <div>Not found !</div>`
 
 const viewRooms = (rooms, bookARoom) => {
+    const bookCallback = (roomId, hour) => {
+        new Noty({theme: 'light', type: 'success', layout: 'topRight', text: `Room ${Number(roomId) + 1} was booked at ${hour}:00`}).show();
+        page('/')
+    }
+
     const bookingHandler = {
         async handleEvent(e) {
             e.preventDefault()
@@ -42,7 +49,7 @@ const viewRooms = (rooms, bookARoom) => {
             if (isBooked === 'false') {
                 const roomId = requestedBooking.dataset.roomid
                 const hour = requestedBooking.dataset.hour
-                bookARoom.bookARoom(roomId, hour)
+                await bookARoom.bookARoom(roomId, hour, bookCallback)
             }
         },
     }
@@ -79,13 +86,18 @@ const viewRooms = (rooms, bookARoom) => {
 }
 
 const viewBookings = (bookings, cancelBooking) => {
+    const cancelCallback = (roomId, hour) => {
+        new Noty({theme: 'light', type: 'warning', layout: 'topRight', text: `Booking for room ${Number(roomId) + 1} at ${hour}:00 was cancelled`}).show();
+        page('/bookings')
+    }
+
     const cancelBookingHandler = {
         async handleEvent(e) {
             e.preventDefault()
             const requestedCancelBooking = e.target
             const roomId = requestedCancelBooking.dataset.roomid
             const hour = requestedCancelBooking.dataset.hour
-            cancelBooking.cancelBooking(roomId, hour)
+            await cancelBooking.cancelBooking(roomId, hour, cancelCallback)
         },
     }
 

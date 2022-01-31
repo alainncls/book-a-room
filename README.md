@@ -38,7 +38,6 @@ This DApp is composed of 2 main folders:
 
 ## To Do
 
-* Reload after booking is confirmed
 * Name the rooms
 * Create rooms on migration
 * Add a "back office" page to administrate the rooms

@@ -8,8 +8,9 @@ class CancelBooking {
         this.contractFactory = contractFactory
     }
 
-    async cancelBooking(roomId: number, hour: number): Promise<void> {
+    async cancelBooking(roomId: number, hour: number, eventCancelListener: any): Promise<void> {
         const bookARoom: BookARoomContract = this.contractFactory.getBookARoomContract()
+        bookARoom.onCancel(eventCancelListener)
         await bookARoom.cancelBooking(roomId, hour)
     }
 }
