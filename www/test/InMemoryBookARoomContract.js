@@ -2,8 +2,7 @@ class InMemoryBookARoomContract {
 
     constructor(etherSigner) {
         this.etherSigner = etherSigner
-        const planning = Array(24).fill('0x0000000000000000000000000000000000000000')
-        this.rooms = [{id: 0, planning}, {id: 1, planning}, {id: 2, planning}, {id: 3, planning}, {id: 4, planning}, {id: 5, planning}, {id: 6, planning}, {id: 7, planning}, {id: 8, planning}, {id: 9, planning}, {id: 10, planning}, {id: 11, planning}, {id: 12, planning}, {id: 13, planning}, {id: 14, planning}, {id: 15, planning}, {id: 16, planning}, {id: 17, planning}, {id: 18, planning}, {id: 19, planning}];
+        this.rooms = [{id: 0}, {id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}, {id: 7}, {id: 8}, {id: 9}, {id: 10}, {id: 11}, {id: 12}, {id: 13}, {id: 14}, {id: 15}, {id: 16}, {id: 17}, {id: 18}, {id: 19}];
     }
 
     getPlanning(roomId) {
@@ -16,6 +15,10 @@ class InMemoryBookARoomContract {
 
     cancelBooking() {
         return Promise.resolve()
+    }
+
+    withEmptyPlanning(roomId) {
+        this.rooms[roomId].planning = Array(24).fill('0x0000000000000000000000000000000000000000');
     }
 
 }
