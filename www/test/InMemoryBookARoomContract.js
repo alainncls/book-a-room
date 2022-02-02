@@ -1,3 +1,5 @@
+import {hexlify} from 'ethers/lib/utils'
+
 class InMemoryBookARoomContract {
 
     constructor(etherSigner) {
@@ -9,16 +11,31 @@ class InMemoryBookARoomContract {
         return Promise.resolve(this.rooms[roomId].planning)
     }
 
-    bookARoom() {
+    bookARoom(roomId, hour) {
+        this.rooms[roomId].planning[hour] = hexlify(10)
         return Promise.resolve()
     }
 
-    cancelBooking() {
+    onBook(roomId, hour, callback) {
+        this.callback = () => callback(roomId, hour)
+    }
+
+    cancelBooking(roomId, hour) {
+        this.rooms[roomId].planning[hour] = '0x0000000000000000000000000000000000000000'
         return Promise.resolve()
+    }
+
+    onCancel(roomId, hour, callback) {
+        this.callback = () => callback(roomId, hour)
     }
 
     withEmptyPlanning(roomId) {
         this.rooms[roomId].planning = Array(24).fill('0x0000000000000000000000000000000000000000');
+    }
+
+    withFilledPlanning(userAddress, roomId, hour) {
+        this.withEmptyPlanning(roomId)
+        this.rooms[roomId].planning[hour] = userAddress;
     }
 
 }
