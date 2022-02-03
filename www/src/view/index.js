@@ -3,11 +3,11 @@ import page from 'page'
 import Noty from 'noty'
 
 // bind app
-const layout = (header, content, footer) => html`
+const layout = (head, content, foot) => html`
     <div class="">
-        <div class="header">${header}</div>
+        <div class="header">${head}</div>
         <div class="container">${content}</div>
-        <div class="footer">${footer}</div>
+        <div class="footer">${foot}</div>
     </div>`
 
 const header = () => html`
@@ -34,7 +34,7 @@ const viewLoading = () => html`
 const viewNotFound = () => html`
     <div>Not found !</div>`
 
-const viewRooms = (rooms, bookARoom) => {
+const viewRooms = (rooms, bookARoomService) => {
     const bookCallback = (roomId, hour) => {
         new Noty({theme: 'light', type: 'success', layout: 'topRight', text: `Room ${Number(roomId) + 1} was booked at ${hour}:00`}).show();
         page('/')
@@ -49,7 +49,7 @@ const viewRooms = (rooms, bookARoom) => {
             if (isBooked === 'false') {
                 const roomId = requestedBooking.dataset.roomid
                 const hour = requestedBooking.dataset.hour
-                await bookARoom.bookARoom(roomId, hour, bookCallback)
+                await bookARoomService.bookARoom(roomId, hour, bookCallback)
             }
         },
     }
@@ -85,7 +85,7 @@ const viewRooms = (rooms, bookARoom) => {
     `
 }
 
-const viewBookings = (bookings, cancelBooking) => {
+const viewBookings = (bookings, bookARoomService) => {
     const cancelCallback = (roomId, hour) => {
         new Noty({theme: 'light', type: 'warning', layout: 'topRight', text: `Booking for room ${Number(roomId) + 1} at ${hour}:00 was cancelled`}).show();
         page('/bookings')
@@ -97,7 +97,7 @@ const viewBookings = (bookings, cancelBooking) => {
             const requestedCancelBooking = e.target
             const roomId = requestedCancelBooking.dataset.roomid
             const hour = requestedCancelBooking.dataset.hour
-            await cancelBooking.cancelBooking(roomId, hour, cancelCallback)
+            await bookARoomService.cancelBooking(roomId, hour, cancelCallback)
         },
     }
 

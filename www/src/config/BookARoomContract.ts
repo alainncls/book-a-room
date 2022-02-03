@@ -1,6 +1,6 @@
 import {ContractReceipt, ContractTransaction, Event, Signer} from 'ethers'
-import {BookARoom as BookARoomContractType} from "./types/ethers-contracts/BookARoom";
-import {BookARoom__factory} from "./types/ethers-contracts";
+import {BookARoom as BookARoomContractType} from './types/ethers-contracts/BookARoom'
+import {BookARoom__factory} from './types/ethers-contracts'
 
 export type OnBookCallback = (roomId: number, hour: number) => void
 export type OnCancelCallback = (roomId: number, hour: number) => void
@@ -34,13 +34,13 @@ class BookARoomContract {
     }
 
     onBook(callback: OnBookCallback) {
-        this.contract.once("BookingConfirmed", (booker, roomId, hour) => {
+        this.contract.once('BookingConfirmed', (booker, roomId, hour) => {
             callback(roomId, hour)
         })
     }
 
     onCancel(callback: OnCancelCallback) {
-        this.contract.once("BookingCancelled", (booker, roomId, hour) => {
+        this.contract.once('BookingCancelled', (booker, roomId, hour) => {
             callback(roomId, hour)
         })
     }

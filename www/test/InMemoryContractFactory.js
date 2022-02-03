@@ -1,5 +1,5 @@
-import {hexlify} from "ethers/lib/utils";
-import InMemoryBookARoomContract from "./InMemoryBookARoomContract";
+import {hexlify} from 'ethers/lib/utils'
+import InMemoryBookARoomContract from './InMemoryBookARoomContract'
 
 class InMemoryContractFactory {
 

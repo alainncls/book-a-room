@@ -4,10 +4,7 @@ import EtherProvider from './config/EtherProvider'
 
 import ContractFactory from './config/ContractFactory'
 
-import GetPlanning from "./service/GetPlanning";
-import GetRooms from "./service/GetRooms";
-import BookARoom from "./service/BookARoom";
-import CancelBooking from "./service/CancelBooking";
+import BookARoomService from "./service/BookARoomService";
 
 import {render} from 'lit-html'
 import {footer, header, layout, viewBookings, viewLoading, viewNotFound, viewRooms} from './view'
@@ -33,26 +30,23 @@ const displayLoading = () => {
     // factory
     const contractFactory = new ContractFactory(etherSigner)
     // services
-    const getPlanning = new GetPlanning(contractFactory)
-    const bookARoom = new BookARoom(contractFactory)
-    const cancelBooking = new CancelBooking(contractFactory)
-    const rooms = new GetRooms(getPlanning)
+    const bookARoomService = new BookARoomService(contractFactory)
 
     // Homepage
     page('/', async function () {
         displayLoading()
-        const cocaRooms = await rooms.getCocaRooms()
-        const pepsiRooms = await rooms.getPepsiRooms()
+        const cocaRooms = await bookARoomService.getCocaRooms()
+        const pepsiRooms = await bookARoomService.getPepsiRooms()
         const allRooms = [...cocaRooms, ...pepsiRooms]
-        const view = viewRooms(allRooms, bookARoom)
+        const view = viewRooms(allRooms, bookARoomService)
         render(layout(header(), view, footer()), wrapper)
     })
 
     // My Bookings
     page('/bookings', async function () {
         displayLoading()
-        const cocaRooms = await rooms.getCocaRooms()
-        const pepsiRooms = await rooms.getPepsiRooms()
+        const cocaRooms = await bookARoomService.getCocaRooms()
+        const pepsiRooms = await bookARoomService.getPepsiRooms()
         const allRooms = [...cocaRooms, ...pepsiRooms]
         const bookings = allRooms
             .map(room => room.planning.map((booker, hour) => {
@@ -62,7 +56,7 @@ const displayLoading = () => {
             }))
             .flat()
             .filter(booking => booking)
-        const view = viewBookings(bookings, cancelBooking)
+        const view = viewBookings(bookings, bookARoomService)
         render(layout(header(), view, footer()), wrapper)
     })
 

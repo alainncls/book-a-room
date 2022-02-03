@@ -1,5 +1,5 @@
-var BookARoom = artifacts.require("./BookARoom.sol");
+const BookARoom = artifacts.require("BookARoom");
 
-module.exports = function(deployer) {
+module.exports = function (deployer) {
     deployer.deploy(BookARoom);
 };

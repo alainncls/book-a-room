@@ -1,5 +1,5 @@
-import {Signer} from "ethers";
-import BookARoomContract from "./BookARoomContract";
+import {Signer} from 'ethers'
+import BookARoomContract from './BookARoomContract'
 
 class ContractFactory {
     private etherSigner: Signer;
