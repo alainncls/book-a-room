@@ -7,11 +7,20 @@ contract('BookARoom', (accounts) => {
     const secondAccount = accounts[1];
     const ROOM_ID = 0;
     const HOUR = 10;
+    const ROOM_NAME = 'ROOM_NAME';
 
     let bookARoomContract;
 
     beforeEach('should setup a new contract instance', async () => {
         bookARoomContract = await BookARoom.new();
+    });
+
+    it('should name a room', async () => {
+        await bookARoomContract.nameRoom(ROOM_ID, ROOM_NAME);
+
+        const roomResult = await bookARoomContract.rooms(ROOM_ID);
+
+        assert.equal(roomResult, ROOM_NAME, 'When a room is added, we should find it in the contract');
     });
 
     it('should book a room and emit an event', async () => {
@@ -22,7 +31,7 @@ contract('BookARoom', (accounts) => {
         assert.equal(planningRoom0[HOUR], firstAccount, 'After a room is booked, the booker should appear in the planning');
 
         truffleAssert.eventEmitted(tx, 'BookingConfirmed', (ev) => {
-            return ev.booker === firstAccount && ev.roomId.toNumber() === ROOM_ID && ev.hour.toNumber() === HOUR;
+            return ev.booker === firstAccount && ev.hour.toNumber() === HOUR;
         });
     });
 
@@ -41,7 +50,7 @@ contract('BookARoom', (accounts) => {
         assert.equal(planningRoom0[HOUR], '0x0000000000000000000000000000000000000000', 'After booking is cancelled, the booker should not appear in the planning anymore');
 
         truffleAssert.eventEmitted(tx, 'BookingCancelled', (ev) => {
-            return ev.booker === firstAccount && ev.roomId.toNumber() === ROOM_ID && ev.hour.toNumber() === HOUR;
+            return ev.booker === firstAccount && ev.hour.toNumber() === HOUR;
         });
     });
 

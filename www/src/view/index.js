@@ -35,8 +35,13 @@ const viewNotFound = () => html`
     <div>Not found !</div>`
 
 const viewRooms = (rooms, bookARoomService) => {
-    const bookCallback = (roomId, hour) => {
-        new Noty({theme: 'light', type: 'success', layout: 'topRight', text: `Room ${Number(roomId) + 1} was booked at ${hour}:00`}).show();
+    const bookCallback = (roomName, hour) => {
+        new Noty({
+            theme: 'light',
+            type: 'success',
+            layout: 'topRight',
+            text: `${roomName} was booked at ${hour}:00`
+        }).show();
         page('/')
     }
 
@@ -59,11 +64,13 @@ const viewRooms = (rooms, bookARoomService) => {
                 const isBooked = booker !== '0x0000000000000000000000000000000000000000'
                 const classIsBooked = isBooked ? 'disabled' : 'enabled';
                 return html`
-                    <button class="hour ${classIsBooked}" ${classIsBooked} data-isbooked=${isBooked} data-roomid=${room.id} data-hour=${hour} @click=${bookingHandler}>${hour}:00</button>`
+                    <button class="hour ${classIsBooked}" ${classIsBooked} data-isbooked=${isBooked} data-roomid=${room.id}
+                            data-hour=${hour} @click=${bookingHandler}>${hour}:00
+                    </button>`
             });
             return html`
                 <tr>
-                    <td>Room #${room.id + 1}</td>
+                    <td>${room.name}</td>
                     <td>${planningDisplay}</td>
                 </tr>`
         }
@@ -86,8 +93,13 @@ const viewRooms = (rooms, bookARoomService) => {
 }
 
 const viewBookings = (bookings, bookARoomService) => {
-    const cancelCallback = (roomId, hour) => {
-        new Noty({theme: 'light', type: 'warning', layout: 'topRight', text: `Booking for room ${Number(roomId) + 1} at ${hour}:00 was cancelled`}).show();
+    const cancelCallback = (roomName, hour) => {
+        new Noty({
+            theme: 'light',
+            type: 'warning',
+            layout: 'topRight',
+            text: `Booking for ${roomName} at ${hour}:00 was cancelled`
+        }).show();
         page('/bookings')
     }
 
@@ -105,7 +117,9 @@ const viewBookings = (bookings, bookARoomService) => {
             return html`
                 <li>
                     Room #${booking.roomId + 1} @${booking.hour}:00
-                    <button class="cancel" data-roomid=${booking.roomId} data-hour=${booking.hour} @click=${cancelBookingHandler}>Cancel ?</button>
+                    <button class="cancel" data-roomid=${booking.roomId} data-hour=${booking.hour}
+                            @click=${cancelBookingHandler}>Cancel ?
+                    </button>
                 </li>`
         }
     )

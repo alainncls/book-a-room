@@ -15,6 +15,10 @@ class BookARoomContract {
         this.contract = BookARoom__factory.connect(bookARoomAddress, etherSigner)
     }
 
+    getRoom(roomId: number): Promise<string> {
+        return this.contract.rooms(roomId)
+    }
+
     getPlanning(roomId: number): Promise<string[]> {
         return this.contract.getPlanning(roomId)
     }
@@ -34,14 +38,15 @@ class BookARoomContract {
     }
 
     onBook(callback: OnBookCallback) {
-        this.contract.once('BookingConfirmed', (booker, roomId, hour) => {
-            callback(roomId, hour)
+        this.contract.once('BookingConfirmed', (booker, roomName, hour) => {
+            console.log('roomName', roomName)
+            callback(roomName, hour)
         })
     }
 
     onCancel(callback: OnCancelCallback) {
-        this.contract.once('BookingCancelled', (booker, roomId, hour) => {
-            callback(roomId, hour)
+        this.contract.once('BookingCancelled', (booker, roomName, hour) => {
+            callback(roomName, hour)
         })
     }
 }

@@ -1,14 +1,20 @@
 class Room {
     private id: number;
+    private name: string;
     private planning: string[];
 
-    constructor(id: number, planning: string[]) {
+    constructor(id: number, name: string, planning: string[]) {
         this.id = id
+        this.name = name
         this.planning = planning
     }
 
-    getName(): number {
+    getId(): number {
         return this.id
+    }
+
+    getName(): string {
+        return this.name
     }
 
     getPlanning(): string[] {

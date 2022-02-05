@@ -4,7 +4,31 @@ class InMemoryBookARoomContract {
 
     constructor(etherSigner) {
         this.etherSigner = etherSigner
-        this.rooms = [{id: 0}, {id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}, {id: 7}, {id: 8}, {id: 9}, {id: 10}, {id: 11}, {id: 12}, {id: 13}, {id: 14}, {id: 15}, {id: 16}, {id: 17}, {id: 18}, {id: 19}];
+        this.rooms = [
+            {id: 0, name: 'Coca 1'},
+            {id: 1, name: 'Coca 2'},
+            {id: 2, name: 'Coca 3'},
+            {id: 3, name: 'Coca 4'},
+            {id: 4, name: 'Coca 5'},
+            {id: 5, name: 'Coca 6'},
+            {id: 6, name: 'Coca 7'},
+            {id: 7, name: 'Coca 8'},
+            {id: 8, name: 'Coca 9'},
+            {id: 9, name: 'Coca 10'},
+            {id: 10, name: 'Pepsi 11'},
+            {id: 11, name: 'Pepsi 12'},
+            {id: 12, name: 'Pepsi 13'},
+            {id: 13, name: 'Pepsi 14'},
+            {id: 14, name: 'Pepsi 15'},
+            {id: 15, name: 'Pepsi 16'},
+            {id: 16, name: 'Pepsi 17'},
+            {id: 17, name: 'Pepsi 18'},
+            {id: 18, name: 'Pepsi 19'},
+            {id: 19, name: 'Pepsi 20'}];
+    }
+
+    getRoom(roomId) {
+        return Promise.resolve(this.rooms[roomId].name)
     }
 
     getPlanning(roomId) {

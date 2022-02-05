@@ -2,10 +2,6 @@ import ContractFactory from "../config/ContractFactory";
 import BookARoomContract from "../config/BookARoomContract";
 import Room from "../model/Room";
 
-const planning: string[] = [];
-const cocaRooms: Room[] = Array.from({length: 10}, (_, i) => new Room(i, planning));
-const pepsiRooms: Room[] = Array.from({length: 10}, (_, i) => new Room(i + 10, planning));
-
 class BookARoomService {
     private contractFactory: ContractFactory;
 
@@ -30,17 +26,23 @@ class BookARoomService {
         return bookARoom.getPlanning(roomId)
     }
 
-    async getCocaRooms(): Promise<any[]> {
-        for (let i = 0; i < cocaRooms.length; i++) {
-            cocaRooms[i].setPlanning(await this.getPlanning(i))
+    async getCocaRooms(): Promise<Room[]> {
+        const cocaRooms: Room[] = []
+        const bookARoom: BookARoomContract = this.contractFactory.getBookARoomContract()
+
+        for (let i = 0; i < 10; i++) {
+            cocaRooms.push(new Room(i, await bookARoom.getRoom(i), await bookARoom.getPlanning(i)));
         }
 
         return cocaRooms;
     }
 
     async getPepsiRooms(): Promise<any[]> {
-        for (let i = 10; i < 10 + pepsiRooms.length; i++) {
-            pepsiRooms[i - 10].setPlanning(await this.getPlanning(i))
+        const pepsiRooms: Room[] = []
+        const bookARoom: BookARoomContract = this.contractFactory.getBookARoomContract()
+
+        for (let i = 10; i < 20; i++) {
+            pepsiRooms.push(new Room(i, await bookARoom.getRoom(i), await bookARoom.getPlanning(i)));
         }
 
         return pepsiRooms;
