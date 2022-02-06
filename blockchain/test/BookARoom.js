@@ -15,12 +15,16 @@ contract('BookARoom', (accounts) => {
         bookARoomContract = await BookARoom.new();
     });
 
-    it('should name a room', async () => {
-        await bookARoomContract.nameRoom(ROOM_ID, ROOM_NAME);
+    it('should name a room and emit an event', async () => {
+        const tx = await bookARoomContract.nameRoom(ROOM_ID, ROOM_NAME);
 
         const roomResult = await bookARoomContract.rooms(ROOM_ID);
 
         assert.equal(roomResult, ROOM_NAME, 'When a room is added, we should find it in the contract');
+
+        truffleAssert.eventEmitted(tx, 'RoomRenamed', (ev) => {
+            return ev.roomName === ROOM_NAME;
+        });
     });
 
     it('should book a room and emit an event', async () => {

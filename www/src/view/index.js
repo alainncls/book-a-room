@@ -70,7 +70,7 @@ const viewRooms = (rooms, bookARoomService) => {
             });
             return html`
                 <tr>
-                    <td>${room.name}</td>
+                    <td><a href="/room/${room.id}">${room.name}</a></td>
                     <td>${planningDisplay}</td>
                 </tr>`
         }
@@ -132,6 +132,40 @@ const viewBookings = (bookings, bookARoomService) => {
     `
 }
 
+const viewRoom = (room, bookARoomService) => {
+    const renameCallback = (roomName) => {
+        new Noty({
+            theme: 'light',
+            type: 'success',
+            layout: 'topRight',
+            text: `Room was successfully renamed to ${roomName}`
+        }).show();
+        page(`/room/${room.id}`)
+    }
+
+    const renameRoomHandler = {
+        async handleEvent(e) {
+            e.preventDefault()
+            const form = document.getElementById('name-room-form')
+            const newNameInput = form.querySelector('[name="name"]')
+            await bookARoomService.nameRoom(room.id, newNameInput.value, renameCallback)
+        },
+    }
+
+    return html`
+        <h2>Room: ${room.name}</h2>
+        <form id="name-room-form">
+            <div class="options">
+                <div class="form-group">
+                    <label class="form-label" for="name">
+                        <input name="name" class="form-input" type="text" id="name" placeholder="Name"/>
+                    </label>
+                </div>
+            </div>
+            <button class="btn btn-primary" @click=${renameRoomHandler}>Rename this room</button>
+        </form>`
+}
+
 export {
     layout,
     header,
@@ -139,5 +173,6 @@ export {
     viewLoading,
     viewNotFound,
     viewRooms,
+    viewRoom,
     viewBookings,
 }

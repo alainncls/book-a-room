@@ -53,6 +53,15 @@ class InMemoryBookARoomContract {
         this.callback = () => callback(roomId, hour)
     }
 
+    nameRoom(roomId, newName) {
+        this.rooms[roomId].name = newName
+        return Promise.resolve()
+    }
+
+    onRename(newName, callback) {
+        this.callback = () => callback(newName)
+    }
+
     withEmptyPlanning(roomId) {
         this.rooms[roomId].planning = Array(24).fill('0x0000000000000000000000000000000000000000');
     }

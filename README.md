@@ -38,4 +38,5 @@ This DApp is composed of 2 main folders:
 
 ## To Do
 
-* Add a "back office" page to administrate the rooms
+* Refactor "get all rooms" so that the service returns directly all the rooms as a single array
+* Refactor "bookings" list as a list of rooms (instead of plain JS object)

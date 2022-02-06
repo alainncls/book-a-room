@@ -26,6 +26,17 @@ class BookARoomService {
         return bookARoom.getPlanning(roomId)
     }
 
+    async getRoom(roomId: number): Promise<Room> {
+        const bookARoom: BookARoomContract = this.contractFactory.getBookARoomContract()
+        return new Room(roomId, await bookARoom.getRoom(roomId), await bookARoom.getPlanning(roomId))
+    }
+
+    async nameRoom(roomId: number, newName: string, eventRenameListener: any): Promise<void> {
+        const bookARoom: BookARoomContract = this.contractFactory.getBookARoomContract()
+        bookARoom.onRename(eventRenameListener)
+        await bookARoom.nameRoom(roomId, newName)
+    }
+
     async getCocaRooms(): Promise<Room[]> {
         const cocaRooms: Room[] = []
         const bookARoom: BookARoomContract = this.contractFactory.getBookARoomContract()

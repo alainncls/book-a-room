@@ -72,4 +72,30 @@ describe('BookARoomService', () => {
         expect(pepsiRooms[roomId - 10].id).to.equal(roomId);
         expect(pepsiRooms[roomId - 10].planning).to.deep.equal(Array(24).fill('0x0000000000000000000000000000000000000000'));
     })
+
+    it('should get room', async () => {
+        // Given
+        const roomId = 1
+        contractFactory.bookARoom.withEmptyPlanning(roomId)
+        // When
+        const room = await bookARoomService.getRoom(roomId)
+        // Then
+        expect(room.id).to.equal(roomId);
+        expect(room.name).to.equal('Coca 2');
+        expect(room.planning).to.deep.equal(Array(24).fill('0x0000000000000000000000000000000000000000'));
+    })
+
+    it('should name room', async () => {
+        // Given
+        const roomId = 1
+        const roomName = 'ROOM_NAME'
+        contractFactory.bookARoom.withEmptyPlanning(roomId)
+        // When
+        await bookARoomService.nameRoom(roomId, roomName)
+        // Then
+        const room = await bookARoomService.getRoom(roomId)
+        expect(room.id).to.equal(roomId);
+        expect(room.name).to.equal(roomName);
+        expect(room.planning).to.deep.equal(Array(24).fill('0x0000000000000000000000000000000000000000'));
+    })
 })

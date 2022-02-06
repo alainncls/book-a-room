@@ -12,11 +12,13 @@ contract BookARoom {
 
     event BookingConfirmed(address indexed booker, string roomName, uint hour);
     event BookingCancelled(address indexed booker, string roomName, uint hour);
+    event RoomRenamed(string roomName);
 
     constructor() {}
 
     function nameRoom(uint _roomId, string memory _roomName) public {
         rooms[_roomId].name = _roomName;
+        emit RoomRenamed(_roomName);
     }
 
     function getPlanning(uint _roomId) public view returns (address[24] memory){
