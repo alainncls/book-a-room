@@ -1,6 +1,7 @@
 import ContractFactory from "../config/ContractFactory";
 import BookARoomContract from "../config/BookARoomContract";
 import Room from "../model/Room";
+import Booking from "../model/Booking";
 
 class BookARoomService {
     private contractFactory: ContractFactory;
@@ -37,6 +38,10 @@ class BookARoomService {
         await bookARoom.nameRoom(roomId, newName)
     }
 
+    async getAllRooms(): Promise<Room[]> {
+        return [...await this.getCocaRooms(), ...await this.getPepsiRooms()]
+    }
+
     async getCocaRooms(): Promise<Room[]> {
         const cocaRooms: Room[] = []
         const bookARoom: BookARoomContract = this.contractFactory.getBookARoomContract()
@@ -57,6 +62,17 @@ class BookARoomService {
         }
 
         return pepsiRooms;
+    }
+
+    async getBookings(userAddress: string): Promise<Booking[]> {
+        const allRooms: Room[] = [...await this.getCocaRooms(), ...await this.getPepsiRooms()]
+
+        return allRooms
+            .filter(room => room.getPlanning())
+            .map(room => room.getPlanning()
+                .map((booker, hour) => booker === userAddress ? new Booking(room.getId(), room.getName(), booker, hour) : undefined)
+                .filter(booking => booking))
+            .flat()
     }
 }
 

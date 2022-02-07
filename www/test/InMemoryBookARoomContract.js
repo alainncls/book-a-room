@@ -62,13 +62,14 @@ class InMemoryBookARoomContract {
         this.callback = () => callback(newName)
     }
 
-    withEmptyPlanning(roomId) {
-        this.rooms[roomId].planning = Array(24).fill('0x0000000000000000000000000000000000000000');
+    withEmptyPlanningAndName(roomId, name) {
+        this.rooms[roomId].planning = Array(24).fill('0x0000000000000000000000000000000000000000')
+        this.rooms[roomId].name = name
     }
 
-    withFilledPlanning(userAddress, roomId, hour) {
-        this.withEmptyPlanning(roomId)
-        this.rooms[roomId].planning[hour] = userAddress;
+    withFilledPlanning(userAddress, roomId, hour, name) {
+        this.withEmptyPlanningAndName(roomId, name)
+        this.rooms[roomId].planning[hour] = userAddress
     }
 
 }

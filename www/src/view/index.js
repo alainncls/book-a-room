@@ -116,7 +116,7 @@ const viewBookings = (bookings, bookARoomService) => {
     const bookingsDisplay = bookings.map((booking) => {
             return html`
                 <li>
-                    Room #${booking.roomId + 1} @${booking.hour}:00
+                    ${booking.roomName} @${booking.hour}:00
                     <button class="cancel" data-roomid=${booking.roomId} data-hour=${booking.hour}
                             @click=${cancelBookingHandler}>Cancel ?
                     </button>

@@ -35,28 +35,14 @@ const displayLoading = () => {
     // Homepage
     page('/', async function () {
         displayLoading()
-        const cocaRooms = await bookARoomService.getCocaRooms()
-        const pepsiRooms = await bookARoomService.getPepsiRooms()
-        const allRooms = [...cocaRooms, ...pepsiRooms]
-        const view = viewRooms(allRooms, bookARoomService)
+        const view = viewRooms(await bookARoomService.getAllRooms(), bookARoomService)
         render(layout(header(), view, footer()), wrapper)
     })
 
     // My Bookings
     page('/bookings', async function () {
         displayLoading()
-        const cocaRooms = await bookARoomService.getCocaRooms()
-        const pepsiRooms = await bookARoomService.getPepsiRooms()
-        const allRooms = [...cocaRooms, ...pepsiRooms]
-        const bookings = allRooms
-            .map(room => room.planning.map((booker, hour) => {
-                if (booker === account) {
-                    return {roomId: room.id, hour}
-                }
-            }))
-            .flat()
-            .filter(booking => booking)
-        const view = viewBookings(bookings, bookARoomService)
+        const view = viewBookings(await bookARoomService.getBookings(account), bookARoomService)
         render(layout(header(), view, footer()), wrapper)
     })
 

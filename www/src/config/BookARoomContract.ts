@@ -47,7 +47,6 @@ class BookARoomContract {
 
     onBook(callback: OnBookCallback) {
         this.contract.once('BookingConfirmed', (booker, roomName, hour) => {
-            console.log('roomName', roomName)
             callback(roomName, hour)
         })
     }
