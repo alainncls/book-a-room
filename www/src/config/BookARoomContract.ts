@@ -6,8 +6,8 @@ export type OnBookCallback = (roomName: string, hour: number) => void
 export type OnCancelCallback = (roomName: string, hour: number) => void
 export type OnRenameCallback = (roomName: string) => void
 
-let bookARoomJson = require('../../../blockchain/build/contracts/BookARoom.json')
-let bookARoomAddress = bookARoomJson.networks['5777'].address
+const bookARoomJson = require('../../../blockchain/build/contracts/BookARoom.json')
+const bookARoomAddress = bookARoomJson.networks['5777'].address
 
 class BookARoomContract {
     private contract: BookARoomContractType;
