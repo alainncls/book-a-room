@@ -28,6 +28,7 @@ This DApp is composed of 2 main folders:
 2. Start Ganache
 3. Test the contracts with `truffle test`
 4. Deploy the contract via `truffle migrate`
+5. Generate TypeScript "types" to wrap the contracts with `npm run types`
 
 ### Web application part
 
