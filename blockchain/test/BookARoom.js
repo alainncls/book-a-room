@@ -27,6 +27,10 @@ contract('BookARoom', (accounts) => {
         });
     });
 
+    it('shouldn\'t be able to rename a room if not the contract owner', async () => {
+        await truffleAssert.reverts(bookARoomContract.nameRoom(ROOM_ID, ROOM_NAME, {from: secondAccount}), 'This function is restricted to the contract\'s owner');
+    });
+
     it('should book a room and emit an event', async () => {
         const tx = await bookARoomContract.bookARoom(ROOM_ID, HOUR, {from: firstAccount});
         const planningRoom0 = await bookARoomContract.getPlanning(ROOM_ID);

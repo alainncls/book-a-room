@@ -3,6 +3,8 @@ pragma solidity ^0.8.11;
 
 contract BookARoom {
 
+    address public owner = msg.sender;
+
     struct Room {
         string name;
         address[24] planning;
@@ -16,7 +18,7 @@ contract BookARoom {
 
     constructor() {}
 
-    function nameRoom(uint _roomId, string memory _roomName) public {
+    function nameRoom(uint _roomId, string memory _roomName) public isOwner {
         rooms[_roomId].name = _roomName;
         emit RoomRenamed(_roomName);
     }
@@ -42,6 +44,11 @@ contract BookARoom {
 
     modifier isBooker(uint _roomId, uint _hour) {
         require(rooms[_roomId].planning[_hour] == msg.sender, "This is not your booking");
+        _;
+    }
+
+    modifier isOwner() {
+        require(msg.sender == owner, "This function is restricted to the contract's owner");
         _;
     }
 
