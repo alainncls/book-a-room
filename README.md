@@ -39,5 +39,4 @@ This DApp is composed of 2 main folders:
 
 ## To Do
 
-* Room can only be renamed by its owner/creator
-* Application admin can add rooms
+* Contract owner can add rooms

@@ -4,6 +4,7 @@ class InMemoryBookARoomContract {
 
     constructor(etherSigner) {
         this.etherSigner = etherSigner
+        this.owner = etherSigner;
         this.rooms = [
             {id: 0, name: 'Coca 1'},
             {id: 1, name: 'Coca 2'},
@@ -25,6 +26,10 @@ class InMemoryBookARoomContract {
             {id: 17, name: 'Pepsi 18'},
             {id: 18, name: 'Pepsi 19'},
             {id: 19, name: 'Pepsi 20'}];
+    }
+
+    getOwner() {
+        return Promise.resolve(this.owner)
     }
 
     getRoom(roomId) {

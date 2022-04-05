@@ -51,7 +51,8 @@ const displayLoading = () => {
         displayLoading()
         const roomId = ctx.params.roomId
         const room = await bookARoomService.getRoom(roomId)
-        const view = viewRoom(room, bookARoomService)
+        const isOwner = (await bookARoomService.getOwner()) === account
+        const view = viewRoom(room, bookARoomService, isOwner)
         render(layout(header(), view, footer()), wrapper)
     })
 

@@ -10,6 +10,11 @@ class BookARoomService {
         this.contractFactory = contractFactory
     }
 
+    async getOwner(): Promise<string> {
+        const bookARoom: BookARoomContract = this.contractFactory.getBookARoomContract()
+        return bookARoom.getOwner()
+    }
+
     async bookARoom(roomId: number, hour: number, eventBookingListener: any): Promise<void> {
         const bookARoom: BookARoomContract = this.contractFactory.getBookARoomContract()
         bookARoom.onBook(eventBookingListener)

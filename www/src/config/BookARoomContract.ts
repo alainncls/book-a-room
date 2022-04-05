@@ -16,6 +16,10 @@ class BookARoomContract {
         this.contract = BookARoom__factory.connect(bookARoomAddress, etherSigner)
     }
 
+    getOwner(): Promise<string> {
+        return this.contract.owner()
+    }
+
     async nameRoom(roomId: number, newName: string): Promise<boolean> {
         const transaction: ContractTransaction = await this.contract.nameRoom(roomId, newName)
         const receipt: ContractReceipt = await transaction.wait(1)

@@ -132,7 +132,7 @@ const viewBookings = (bookings, bookARoomService) => {
     `
 }
 
-const viewRoom = (room, bookARoomService) => {
+const viewRoom = (room, bookARoomService, isOwner) => {
     const renameCallback = (roomName) => {
         new Noty({
             theme: 'light',
@@ -158,11 +158,15 @@ const viewRoom = (room, bookARoomService) => {
             <div class="options">
                 <div class="form-group">
                     <label class="form-label" for="name">
-                        <input name="name" class="form-input" type="text" id="name" placeholder="Name"/>
+                        <input name="name" class="form-input" type="text" id="name" placeholder="Name"
+                               ?disabled="${!isOwner}"/>
+                        <p class="form-input-hint">${isOwner ? '' : 'Only the contract owner can rename a room'}</p>
                     </label>
                 </div>
             </div>
-            <button class="btn btn-primary" @click=${renameRoomHandler}>Rename this room</button>
+            <button class="btn btn-primary" @click=${renameRoomHandler} ?disabled="${!isOwner}">Rename this
+                room
+            </button>
         </form>`
 }
 

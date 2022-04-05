@@ -13,6 +13,18 @@ describe('BookARoomService', () => {
         bookARoomService = new BookARoomService(contractFactory)
     })
 
+    it('should get the contract owner', async () => {
+        // Given
+        const userAddress = hexlify(10)
+        const roomId = 1
+        const hour = 1
+        contractFactory.bookARoom.withEmptyPlanningAndName(roomId, hour, ROOM_NAME)
+        // When
+        const result = await bookARoomService.getOwner()
+        // Then
+        expect(result).to.equal(userAddress)
+    })
+
     it('should book a room', async () => {
         // Given
         const userAddress = hexlify(10)
