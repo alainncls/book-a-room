@@ -7,7 +7,7 @@ module.exports = async function (deployer) {
     const pepsiRooms = Array.from({length: 10}, (_, i) => `Pepsi ${i + 1}`)
     const allRooms = [...cocaRooms, ...pepsiRooms]
 
-    allRooms.forEach(function (room, index) {
-        bookARoom.nameRoom(index, room)
-    });
+    cocaRooms.forEach(function (room) {
+         bookARoom.addRoom(room)
+     });
 }

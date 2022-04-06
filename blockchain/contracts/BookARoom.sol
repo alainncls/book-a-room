@@ -10,13 +10,25 @@ contract BookARoom {
         address[24] planning;
     }
 
-    Room[20] public rooms;
+    Room[] public rooms;
+    uint public roomsNumber = 0;
 
     event BookingConfirmed(address indexed booker, string roomName, uint hour);
     event BookingCancelled(address indexed booker, string roomName, uint hour);
+    event RoomAdded(string roomName, uint roomIndex);
     event RoomRenamed(string roomName);
 
     constructor() {}
+
+    function addRoom(string memory _roomName) public isOwner {
+        address[24] memory planning;
+        for (uint i = 0; i < 24; i++) {
+            planning[i] = address(0);
+        }
+        rooms.push(Room(_roomName, planning));
+        emit RoomAdded(_roomName, roomsNumber);
+        roomsNumber++;
+    }
 
     function nameRoom(uint _roomId, string memory _roomName) public isOwner {
         rooms[_roomId].name = _roomName;
