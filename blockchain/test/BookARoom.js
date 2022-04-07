@@ -8,27 +8,29 @@ contract('BookARoom', (accounts) => {
     const ROOM_ID = 0;
     const HOUR = 10;
     const ROOM_NAME = 'ROOM_NAME';
+    const NEW_ROOM_NAME = 'NEW_ROOM_NAME';
 
     let bookARoomContract;
 
     beforeEach('should setup a new contract instance', async () => {
         bookARoomContract = await BookARoom.new();
+        await bookARoomContract.addRoom(ROOM_NAME);
     });
 
     it('should name a room and emit an event', async () => {
-        const tx = await bookARoomContract.nameRoom(ROOM_ID, ROOM_NAME);
+        const tx = await bookARoomContract.nameRoom(ROOM_ID, NEW_ROOM_NAME);
 
         const roomResult = await bookARoomContract.rooms(ROOM_ID);
 
-        assert.equal(roomResult, ROOM_NAME, 'When a room is added, we should find it in the contract');
+        assert.equal(roomResult, NEW_ROOM_NAME, 'When a room is renamed, we should find its new name');
 
         truffleAssert.eventEmitted(tx, 'RoomRenamed', (ev) => {
-            return ev.roomName === ROOM_NAME;
+            return ev.roomName === NEW_ROOM_NAME;
         });
     });
 
     it('shouldn\'t be able to rename a room if not the contract owner', async () => {
-        await truffleAssert.reverts(bookARoomContract.nameRoom(ROOM_ID, ROOM_NAME, {from: secondAccount}), 'This function is restricted to the contract\'s owner');
+        await truffleAssert.reverts(bookARoomContract.nameRoom(ROOM_ID, NEW_ROOM_NAME, {from: secondAccount}), 'This function is restricted to the contract\'s owner');
     });
 
     it('should book a room and emit an event', async () => {
