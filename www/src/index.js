@@ -7,7 +7,7 @@ import ContractFactory from './config/ContractFactory'
 import BookARoomService from "./service/BookARoomService";
 
 import {render} from 'lit-html'
-import {footer, header, layout, viewBookings, viewLoading, viewNotFound, viewRoom, viewRooms} from './view'
+import {footer, header, layout, viewAddRoom, viewBookings, viewLoading, viewNotFound, viewRoom, viewRooms} from './view'
 // notifications
 import 'noty/lib/noty.css'
 import 'noty/lib/themes/light.css'
@@ -46,8 +46,16 @@ const displayLoading = () => {
         render(layout(header(), view, footer()), wrapper)
     })
 
+    // Add room
+    page('/rooms/new', async function () {
+        displayLoading()
+        const isOwner = (await bookARoomService.getOwner()) === account
+        const view = viewAddRoom(bookARoomService, isOwner)
+        render(layout(header(), view, footer()), wrapper)
+    })
+
     // Room
-    page('/room/:roomId', async function (ctx) {
+    page('/rooms/:roomId', async function (ctx) {
         displayLoading()
         const roomId = ctx.params.roomId
         const room = await bookARoomService.getRoom(roomId)

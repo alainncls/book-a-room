@@ -39,4 +39,4 @@ This DApp is composed of 2 main folders:
 
 ## To Do
 
-* Contract owner can add rooms
+* Contract owner can remove rooms

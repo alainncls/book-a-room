@@ -1,9 +1,10 @@
-import {ContractReceipt, ContractTransaction, Event, Signer} from 'ethers'
+import {BigNumber, ContractReceipt, ContractTransaction, Event, Signer} from 'ethers'
 import {BookARoom as BookARoomContractType} from './types/ethers-contracts/BookARoom'
 import {BookARoom__factory} from './types/ethers-contracts'
 
 export type OnBookCallback = (roomName: string, hour: number) => void
 export type OnCancelCallback = (roomName: string, hour: number) => void
+export type OnAddCallback = (roomName: string, roomIndex: number) => void
 export type OnRenameCallback = (roomName: string) => void
 
 const bookARoomJson = require('../../../blockchain/build/contracts/BookARoom.json')
@@ -18,6 +19,17 @@ class BookARoomContract {
 
     getOwner(): Promise<string> {
         return this.contract.owner()
+    }
+
+    getRoomsNumber() {
+        return this.contract.roomsNumber().then(value => value.toNumber())
+    }
+
+    async addRoom(name: string): Promise<boolean> {
+        const transaction: ContractTransaction = await this.contract.addRoom(name)
+        const receipt: ContractReceipt = await transaction.wait(1)
+        const event: Event = receipt.events.pop()
+        return !!event;
     }
 
     async nameRoom(roomId: number, newName: string): Promise<boolean> {
@@ -50,14 +62,20 @@ class BookARoomContract {
     }
 
     onBook(callback: OnBookCallback) {
-        this.contract.once('BookingConfirmed', (booker, roomName, hour) => {
+        this.contract.once('BookingConfirmed', (_booker, roomName, hour) => {
             callback(roomName, hour)
         })
     }
 
     onCancel(callback: OnCancelCallback) {
-        this.contract.once('BookingCancelled', (booker, roomName, hour) => {
+        this.contract.once('BookingCancelled', (_booker, roomName, hour) => {
             callback(roomName, hour)
+        })
+    }
+
+    onAdd(callback: OnAddCallback) {
+        this.contract.once('RoomAdded', (roomName, roomIndex) => {
+            callback(roomName, roomIndex)
         })
     }
 

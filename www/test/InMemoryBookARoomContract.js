@@ -36,6 +36,15 @@ class InMemoryBookARoomContract {
         return Promise.resolve(this.rooms[roomId].name)
     }
 
+    getRoomsNumber() {
+        return Promise.resolve(this.rooms.length)
+    }
+
+    addRoom(name) {
+        this.rooms.push({id: this.rooms.length, name})
+        return Promise.resolve()
+    }
+
     getPlanning(roomId) {
         return Promise.resolve(this.rooms[roomId].planning)
     }
@@ -61,6 +70,10 @@ class InMemoryBookARoomContract {
     nameRoom(roomId, newName) {
         this.rooms[roomId].name = newName
         return Promise.resolve()
+    }
+
+    onAdd(name, index, callback) {
+        this.callback = () => callback(name, index)
     }
 
     onRename(newName, callback) {

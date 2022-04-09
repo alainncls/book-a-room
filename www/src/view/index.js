@@ -70,7 +70,7 @@ const viewRooms = (rooms, bookARoomService) => {
             });
             return html`
                 <tr>
-                    <td><a href="/room/${room.id}">${room.name}</a></td>
+                    <td><a href="/rooms/${room.id}">${room.name}</a></td>
                     <td>${planningDisplay}</td>
                 </tr>`
         }
@@ -132,6 +132,43 @@ const viewBookings = (bookings, bookARoomService) => {
     `
 }
 
+const viewAddRoom = (bookARoomService, isOwner) => {
+    const addCallback = (roomName, roomIndex) => {
+        new Noty({
+            theme: 'light',
+            type: 'success',
+            layout: 'topRight',
+            text: `Room ${roomName} was successfully added`
+        }).show();
+        page(`/rooms/${roomIndex}`)
+    }
+
+    const addRoomHandler = {
+        async handleEvent(e) {
+            e.preventDefault()
+            const form = document.getElementById('add-room-form')
+            const nameInput = form.querySelector('[name="name"]')
+            await bookARoomService.addRoom(nameInput.value, addCallback)
+        },
+    }
+
+    return html`
+        <h2>Add a room</h2>
+        <form id="add-room-form">
+            <div class="options">
+                <div class="form-group">
+                    <label class="form-label" for="name">
+                        <input name="name" class="form-input" type="text" id="name" placeholder="Name"
+                               ?disabled="${!isOwner}"/>
+                        <p class="form-input-hint">${isOwner ? '' : 'Only the contract owner can add a room'}</p>
+                    </label>
+                </div>
+            </div>
+            <button class="btn btn-primary" @click=${addRoomHandler} ?disabled="${!isOwner}">Add the room
+            </button>
+        </form>`
+}
+
 const viewRoom = (room, bookARoomService, isOwner) => {
     const renameCallback = (roomName) => {
         new Noty({
@@ -140,7 +177,7 @@ const viewRoom = (room, bookARoomService, isOwner) => {
             layout: 'topRight',
             text: `Room was successfully renamed to ${roomName}`
         }).show();
-        page(`/room/${room.id}`)
+        page(`/rooms/${room.id}`)
     }
 
     const renameRoomHandler = {
@@ -177,6 +214,7 @@ export {
     viewLoading,
     viewNotFound,
     viewRooms,
+    viewAddRoom,
     viewRoom,
     viewBookings,
 }

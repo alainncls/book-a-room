@@ -25,6 +25,16 @@ describe('BookARoomService', () => {
         expect(result).to.equal(userAddress)
     })
 
+    it('should add a room', async () => {
+        // Given
+        const newRoomName = "New room name"
+        // When
+        await bookARoomService.addRoom(newRoomName, () => {
+        })
+        // Then
+        expect(contractFactory.bookARoom.rooms[20].name).to.equal(newRoomName)
+    })
+
     it('should book a room', async () => {
         // Given
         const userAddress = hexlify(10)
@@ -62,31 +72,7 @@ describe('BookARoomService', () => {
         expect(planning[0]).to.equal('0x0000000000000000000000000000000000000000')
     })
 
-    it('should get Coca Rooms', async () => {
-        // Given
-        const roomId = 1
-        contractFactory.bookARoom.withEmptyPlanningAndName(roomId, ROOM_NAME)
-        // When
-        const cocaRooms = await bookARoomService.getCocaRooms()
-        // Then
-        expect(cocaRooms).to.have.length(10)
-        expect(cocaRooms[roomId].id).to.equal(roomId)
-        expect(cocaRooms[roomId].getPlanning()).to.deep.equal(Array(24).fill('0x0000000000000000000000000000000000000000'))
-    })
-
-    it('should get Pepsi Rooms', async () => {
-        // Given
-        const roomId = 11
-        contractFactory.bookARoom.withEmptyPlanningAndName(roomId, ROOM_NAME)
-        // When
-        const pepsiRooms = await bookARoomService.getPepsiRooms()
-        // Then
-        expect(pepsiRooms).to.have.length(10)
-        expect(pepsiRooms[roomId - 10].id).to.equal(roomId)
-        expect(pepsiRooms[roomId - 10].planning).to.deep.equal(Array(24).fill('0x0000000000000000000000000000000000000000'))
-    })
-
-    it('should get all Rooms', async () => {
+    it('should get all rooms', async () => {
         // Given
         const userAddress = hexlify(10)
         const roomId = 1
