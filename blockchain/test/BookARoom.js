@@ -17,16 +17,16 @@ contract('BookARoom', (accounts) => {
         await bookARoomContract.addRoom(ROOM_NAME);
     });
 
-    it('should add a room and emit an event', async () => {
-        const initialRoomsNumber = await bookARoomContract.roomsNumber();
+    it('should get rooms number', async () => {
+        assert.equal(await bookARoomContract.getRoomsNumber(), 1, 'At first there should be only one room');
+    });
 
-        assert.equal(initialRoomsNumber, 1, 'At first there should be only one room');
+    it('should add a room and emit an event', async () => {
+        assert.equal(await bookARoomContract.getRoomsNumber(), 1, 'At first there should be only one room');
 
         const tx = await bookARoomContract.addRoom(ROOM_NAME);
 
-        const result = await bookARoomContract.roomsNumber();
-
-        assert.equal(result, 2, 'When a room is added, the number of rooms should be incremented');
+        assert.equal(await bookARoomContract.getRoomsNumber(), 2, 'When a room is added, the number of rooms should be incremented');
 
         truffleAssert.eventEmitted(tx, 'RoomAdded', (ev) => {
             return ev.roomName === ROOM_NAME;
@@ -40,9 +40,7 @@ contract('BookARoom', (accounts) => {
     it('should name a room and emit an event', async () => {
         const tx = await bookARoomContract.nameRoom(ROOM_ID, NEW_ROOM_NAME);
 
-        const roomResult = await bookARoomContract.rooms(ROOM_ID);
-
-        assert.equal(roomResult, NEW_ROOM_NAME, 'When a room is renamed, we should find its new name');
+        assert.equal(await bookARoomContract.rooms(ROOM_ID), NEW_ROOM_NAME, 'When a room is renamed, we should find its new name');
 
         truffleAssert.eventEmitted(tx, 'RoomRenamed', (ev) => {
             return ev.roomName === NEW_ROOM_NAME;

@@ -1,4 +1,4 @@
-import {BigNumber, ContractReceipt, ContractTransaction, Event, Signer} from 'ethers'
+import {ContractReceipt, ContractTransaction, Event, Signer} from 'ethers'
 import {BookARoom as BookARoomContractType} from './types/ethers-contracts/BookARoom'
 import {BookARoom__factory} from './types/ethers-contracts'
 
@@ -22,7 +22,7 @@ class BookARoomContract {
     }
 
     getRoomsNumber() {
-        return this.contract.roomsNumber().then(value => value.toNumber())
+        return this.contract.getRoomsNumber().then(value => value.toNumber())
     }
 
     async addRoom(name: string): Promise<boolean> {

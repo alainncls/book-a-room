@@ -15,6 +15,11 @@ class BookARoomService {
         return bookARoom.getOwner()
     }
 
+    async getRoomsNumber(): Promise<number> {
+        const bookARoom: BookARoomContract = this.contractFactory.getBookARoomContract()
+        return bookARoom.getRoomsNumber()
+    }
+
     async bookARoom(roomId: number, hour: number, eventBookingListener: any): Promise<void> {
         const bookARoom: BookARoomContract = this.contractFactory.getBookARoomContract()
         bookARoom.onBook(eventBookingListener)
@@ -52,7 +57,7 @@ class BookARoomService {
     async getAllRooms(): Promise<Room[]> {
         const allRooms: Room[] = []
         const bookARoom: BookARoomContract = this.contractFactory.getBookARoomContract()
-        const roomsNumber = await bookARoom.getRoomsNumber()
+        const roomsNumber = await this.getRoomsNumber()
 
         for (let i = 0; i < roomsNumber; i++) {
             allRooms.push(new Room(i, await bookARoom.getRoom(i), await bookARoom.getPlanning(i)));

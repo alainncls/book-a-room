@@ -11,7 +11,6 @@ contract BookARoom {
     }
 
     Room[] public rooms;
-    uint public roomsNumber = 0;
 
     event BookingConfirmed(address indexed booker, string roomName, uint hour);
     event BookingCancelled(address indexed booker, string roomName, uint hour);
@@ -26,8 +25,7 @@ contract BookARoom {
             planning[i] = address(0);
         }
         rooms.push(Room(_roomName, planning));
-        emit RoomAdded(_roomName, roomsNumber);
-        roomsNumber++;
+        emit RoomAdded(_roomName, getRoomsNumber());
     }
 
     function nameRoom(uint _roomId, string memory _roomName) public isOwner {
@@ -47,6 +45,10 @@ contract BookARoom {
     function cancelBooking(uint _roomId, uint _hour) public isBooker(_roomId, _hour) {
         rooms[_roomId].planning[_hour] = address(0);
         emit BookingCancelled(msg.sender, rooms[_roomId].name, _hour);
+    }
+
+    function getRoomsNumber() public view returns (uint) {
+        return rooms.length;
     }
 
     modifier roomIsFree(uint _roomId, uint _hour) {
