@@ -29,13 +29,30 @@ contract('BookARoom', (accounts) => {
         assert.equal(await bookARoomContract.getRoomsNumber(), 2, 'When a room is added, the number of rooms should be incremented');
 
         truffleAssert.eventEmitted(tx, 'RoomAdded', (ev) => {
-            return ev.roomName === ROOM_NAME;
+            return (ev.roomName === ROOM_NAME) && (ev.roomIndex.toNumber() === 1);
         });
     });
 
     it('shouldn\'t be able to add a room if not the contract owner', async () => {
         await truffleAssert.reverts(bookARoomContract.addRoom(ROOM_NAME, {from: secondAccount}), 'This function is restricted to the contract\'s owner');
     });
+
+    it('should delete a room and emit an event', async () => {
+        assert.equal(await bookARoomContract.getRoomsNumber(), 1, 'At first there should be only one room');
+
+        const tx = await bookARoomContract.deleteRoom(0);
+
+        assert.equal(await bookARoomContract.getRoomsNumber(), 0, 'When a room is deleted, the number of rooms should be decremented');
+
+        truffleAssert.eventEmitted(tx, 'RoomDeleted', () => {
+            return true;
+        });
+    });
+
+    it('shouldn\'t be able to delete a room if not the contract owner', async () => {
+        await truffleAssert.reverts(bookARoomContract.deleteRoom(0, {from: secondAccount}), 'This function is restricted to the contract\'s owner');
+    });
+
 
     it('should name a room and emit an event', async () => {
         const tx = await bookARoomContract.nameRoom(ROOM_ID, NEW_ROOM_NAME);

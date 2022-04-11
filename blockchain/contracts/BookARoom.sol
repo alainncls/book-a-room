@@ -15,6 +15,7 @@ contract BookARoom {
     event BookingConfirmed(address indexed booker, string roomName, uint hour);
     event BookingCancelled(address indexed booker, string roomName, uint hour);
     event RoomAdded(string roomName, uint roomIndex);
+    event RoomDeleted();
     event RoomRenamed(string roomName);
 
     constructor() {}
@@ -25,7 +26,16 @@ contract BookARoom {
             planning[i] = address(0);
         }
         rooms.push(Room(_roomName, planning));
-        emit RoomAdded(_roomName, getRoomsNumber());
+        emit RoomAdded(_roomName, getRoomsNumber() - 1);
+    }
+
+    function deleteRoom(uint indexToDelete) public isOwner {
+        require(rooms.length > indexToDelete, "Out of bounds");
+        for (uint i = indexToDelete; i < rooms.length - 1; i++) {
+            rooms[i] = rooms[i + 1];
+        }
+        rooms.pop();
+        emit RoomDeleted();
     }
 
     function nameRoom(uint _roomId, string memory _roomName) public isOwner {
