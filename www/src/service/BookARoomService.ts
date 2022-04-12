@@ -48,6 +48,12 @@ class BookARoomService {
         await bookARoom.addRoom(name)
     }
 
+    async deleteRoom(indexToDelete: number, eventDeleteListener: any): Promise<void> {
+        const bookARoom: BookARoomContract = this.contractFactory.getBookARoomContract()
+        bookARoom.onDelete(eventDeleteListener)
+        await bookARoom.deleteRoom(indexToDelete)
+    }
+
     async nameRoom(roomId: number, newName: string, eventRenameListener: any): Promise<void> {
         const bookARoom: BookARoomContract = this.contractFactory.getBookARoomContract()
         bookARoom.onRename(eventRenameListener)

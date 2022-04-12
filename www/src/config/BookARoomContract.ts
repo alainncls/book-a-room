@@ -5,6 +5,7 @@ import {BookARoom__factory} from './types/ethers-contracts'
 export type OnBookCallback = (roomName: string, hour: number) => void
 export type OnCancelCallback = (roomName: string, hour: number) => void
 export type OnAddCallback = (roomName: string, roomIndex: number) => void
+export type OnDeleteCallback = () => void
 export type OnRenameCallback = (roomName: string) => void
 
 const bookARoomJson = require('../../../blockchain/build/contracts/BookARoom.json')
@@ -27,6 +28,13 @@ class BookARoomContract {
 
     async addRoom(name: string): Promise<boolean> {
         const transaction: ContractTransaction = await this.contract.addRoom(name)
+        const receipt: ContractReceipt = await transaction.wait(1)
+        const event: Event = receipt.events.pop()
+        return !!event;
+    }
+
+    async deleteRoom(indexToDelete: number): Promise<boolean> {
+        const transaction: ContractTransaction = await this.contract.deleteRoom(indexToDelete)
         const receipt: ContractReceipt = await transaction.wait(1)
         const event: Event = receipt.events.pop()
         return !!event;
@@ -76,6 +84,12 @@ class BookARoomContract {
     onAdd(callback: OnAddCallback) {
         this.contract.once('RoomAdded', (roomName, roomIndex) => {
             callback(roomName, roomIndex)
+        })
+    }
+
+    onDelete(callback: OnDeleteCallback) {
+        this.contract.once('RoomDeleted', () => {
+            callback()
         })
     }
 

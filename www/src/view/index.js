@@ -15,6 +15,7 @@ const header = () => html`
         <section class="navbar-center">
             <a href="/" class="btn btn-link sitename">Book A Room</a>
             <a href="/" class="btn btn-link">All Rooms</a>
+            <a href="/rooms/new" class="btn btn-link">Add a room</a>
             <a href="/bookings" class="btn btn-link">My Bookings</a>
         </section>
     </header>`
@@ -183,15 +184,32 @@ const viewRoom = (room, bookARoomService, isOwner) => {
     const renameRoomHandler = {
         async handleEvent(e) {
             e.preventDefault()
-            const form = document.getElementById('name-room-form')
+            const form = document.getElementById('room-form')
             const newNameInput = form.querySelector('[name="name"]')
             await bookARoomService.nameRoom(room.id, newNameInput.value, renameCallback)
         },
     }
 
+    const deleteCallback = () => {
+        new Noty({
+            theme: 'light',
+            type: 'success',
+            layout: 'topRight',
+            text: `Room was successfully deleted`
+        }).show();
+        page(`/`)
+    }
+
+    const deleteRoomHandler = {
+        async handleEvent(e) {
+            e.preventDefault()
+            await bookARoomService.deleteRoom(room.id, deleteCallback)
+        },
+    }
+
     return html`
         <h2>Room: ${room.name}</h2>
-        <form id="name-room-form">
+        <form id="room-form">
             <div class="options">
                 <div class="form-group">
                     <label class="form-label" for="name">
@@ -201,8 +219,9 @@ const viewRoom = (room, bookARoomService, isOwner) => {
                     </label>
                 </div>
             </div>
-            <button class="btn btn-primary" @click=${renameRoomHandler} ?disabled="${!isOwner}">Rename this
-                room
+            <button class="btn btn-primary" @click=${renameRoomHandler} ?disabled="${!isOwner}">Rename this room
+            </button>
+            <button class="btn btn-error" @click=${deleteRoomHandler} ?disabled="${!isOwner}">Delete this room
             </button>
         </form>`
 }
