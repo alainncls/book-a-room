@@ -39,4 +39,4 @@ This DApp is composed of 2 main folders:
 
 ## To Do
 
-* Contract owner can remove rooms
+* Add a modifier to ensure room exists before any operation
