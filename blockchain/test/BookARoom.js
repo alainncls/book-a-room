@@ -53,6 +53,9 @@ contract('BookARoom', (accounts) => {
         await truffleAssert.reverts(bookARoomContract.deleteRoom(0, {from: secondAccount}), 'This function is restricted to the contract\'s owner');
     });
 
+    it('shouldn\'t be able to delete a room if it doesn\'t exist', async () => {
+        await truffleAssert.reverts(bookARoomContract.deleteRoom(2), 'This room doesn\'t exist');
+    });
 
     it('should name a room and emit an event', async () => {
         const tx = await bookARoomContract.nameRoom(ROOM_ID, NEW_ROOM_NAME);
@@ -66,6 +69,22 @@ contract('BookARoom', (accounts) => {
 
     it('shouldn\'t be able to rename a room if not the contract owner', async () => {
         await truffleAssert.reverts(bookARoomContract.nameRoom(ROOM_ID, NEW_ROOM_NAME, {from: secondAccount}), 'This function is restricted to the contract\'s owner');
+    });
+
+    it('shouldn\'t be able to rename a room if it doesn\'t exist', async () => {
+        await truffleAssert.reverts(bookARoomContract.nameRoom(2, NEW_ROOM_NAME), 'This room doesn\'t exist');
+    });
+
+    it('should be able to get a room\'s planning', async () => {
+        const expectedPlanning=Array(24).fill('0x0000000000000000000000000000000000000000');
+        const planningRoom = await bookARoomContract.getPlanning(ROOM_ID);
+
+        assert.isNotNull(planningRoom);
+        assert.deepEqual(planningRoom, expectedPlanning, 'A new room should have an empty planning');
+    });
+
+    it('shouldn\'t be able to get a room\'s planning if it doesn\'t exist', async () => {
+        await truffleAssert.reverts(bookARoomContract.getPlanning(2), 'This room doesn\'t exist');
     });
 
     it('should book a room and emit an event', async () => {
@@ -86,6 +105,10 @@ contract('BookARoom', (accounts) => {
         await truffleAssert.reverts(bookARoomContract.bookARoom(ROOM_ID, HOUR, {from: secondAccount}), 'This hour is already booked');
     });
 
+    it('shouldn\'t be able to book a room if it doesn\'t exist', async () => {
+        await truffleAssert.reverts(bookARoomContract.bookARoom(2, HOUR, {from: secondAccount}), 'This room doesn\'t exist');
+    });
+
     it('should cancel a booking and emit an event', async () => {
         await bookARoomContract.bookARoom(ROOM_ID, HOUR, {from: firstAccount});
         const tx = await bookARoomContract.cancelBooking(ROOM_ID, HOUR, {from: firstAccount});
@@ -103,5 +126,9 @@ contract('BookARoom', (accounts) => {
         await bookARoomContract.bookARoom(ROOM_ID, HOUR, {from: firstAccount});
 
         await truffleAssert.reverts(bookARoomContract.cancelBooking(ROOM_ID, HOUR, {from: secondAccount}), 'This is not your booking');
+    });
+
+    it('shouldn\'t be able to cancel a booking if the room doesn\'t exist', async () => {
+        await truffleAssert.reverts(bookARoomContract.cancelBooking(2, HOUR, {from: secondAccount}), 'This room doesn\'t exist');
     });
 });

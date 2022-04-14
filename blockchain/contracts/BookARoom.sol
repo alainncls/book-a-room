@@ -29,30 +29,29 @@ contract BookARoom {
         emit RoomAdded(_roomName, getRoomsNumber() - 1);
     }
 
-    function deleteRoom(uint indexToDelete) public isOwner {
-        require(rooms.length > indexToDelete, "Out of bounds");
-        for (uint i = indexToDelete; i < rooms.length - 1; i++) {
+    function deleteRoom(uint _indexToDelete) public isOwner roomExists(_indexToDelete) {
+        for (uint i = _indexToDelete; i < rooms.length - 1; i++) {
             rooms[i] = rooms[i + 1];
         }
         rooms.pop();
         emit RoomDeleted();
     }
 
-    function nameRoom(uint _roomId, string memory _roomName) public isOwner {
+    function nameRoom(uint _roomId, string memory _roomName) public isOwner roomExists(_roomId) {
         rooms[_roomId].name = _roomName;
         emit RoomRenamed(_roomName);
     }
 
-    function getPlanning(uint _roomId) public view returns (address[24] memory){
+    function getPlanning(uint _roomId) public view roomExists(_roomId) returns (address[24] memory){
         return rooms[_roomId].planning;
     }
 
-    function bookARoom(uint _roomId, uint _hour) public roomIsFree(_roomId, _hour) {
+    function bookARoom(uint _roomId, uint _hour) public roomExists(_roomId) roomIsFree(_roomId, _hour) {
         rooms[_roomId].planning[_hour] = msg.sender;
         emit BookingConfirmed(msg.sender, rooms[_roomId].name, _hour);
     }
 
-    function cancelBooking(uint _roomId, uint _hour) public isBooker(_roomId, _hour) {
+    function cancelBooking(uint _roomId, uint _hour) public roomExists(_roomId) isBooker(_roomId, _hour) {
         rooms[_roomId].planning[_hour] = address(0);
         emit BookingCancelled(msg.sender, rooms[_roomId].name, _hour);
     }
@@ -73,6 +72,11 @@ contract BookARoom {
 
     modifier isOwner() {
         require(msg.sender == owner, "This function is restricted to the contract's owner");
+        _;
+    }
+
+    modifier roomExists(uint _index) {
+        require(rooms.length > _index, "This room doesn't exist");
         _;
     }
 

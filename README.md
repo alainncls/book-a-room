@@ -38,5 +38,3 @@ This DApp is composed of 2 main folders:
 4. The webapp is available at http://localhost:8080/
 
 ## To Do
-
-* Add a modifier to ensure room exists before any operation
