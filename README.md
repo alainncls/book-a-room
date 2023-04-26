@@ -1,6 +1,7 @@
 # Book A Room
 
-[![Build](https://github.com/alainncls/book-a-room/actions/workflows/pipeline.yml/badge.svg)](https://github.com/alainncls/book-a-room/actions/workflows/pipeline.yml)
+[![Build Contracts](https://github.com/alainncls/book-a-room/actions/workflows/build-contracts.yml/badge.svg)](https://github.com/alainncls/book-a-room/actions/workflows/build-contracts.yml)
+[![Build WebApp](https://github.com/alainncls/book-a-room/actions/workflows/build-webapp.yml/badge.svg)](https://github.com/alainncls/book-a-room/actions/workflows/build-webapp.yml)
 [![Coverage Status](https://coveralls.io/repos/github/alainncls/book-a-room/badge.svg?branch=main)](https://coveralls.io/github/alainncls/book-a-room?branch=main)
 
 Two companies, COKE and PEPSI, are sharing an office building but as they are competitors, they don’t trust each other.
