@@ -21,7 +21,7 @@
   "license": "ISC",
   "devDependencies": {
     "coveralls": "^3.1.1",
-    "solidity-coverage": "0.7.19",
+    "solidity-coverage": "0.8.2",
     "@typechain/ethers-v5": "^10.2.0",
     "chai": "^4.3.7",
     "truffle": "^5.5.7",
